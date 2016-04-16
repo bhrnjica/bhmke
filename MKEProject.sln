@@ -1,0 +1,28 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio 14
+VisualStudioVersion = 14.0.25123.0
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MKEConsole", "MKEConsole\MKEConsole.csproj", "{B2720259-2534-4C5E-B6C7-88BD13A705F5}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MKELib", "MKELib\MKELib.csproj", "{490F9F04-37A7-4476-B232-17DC55BC990A}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{B2720259-2534-4C5E-B6C7-88BD13A705F5}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{B2720259-2534-4C5E-B6C7-88BD13A705F5}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{B2720259-2534-4C5E-B6C7-88BD13A705F5}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{B2720259-2534-4C5E-B6C7-88BD13A705F5}.Release|Any CPU.Build.0 = Release|Any CPU
+		{490F9F04-37A7-4476-B232-17DC55BC990A}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{490F9F04-37A7-4476-B232-17DC55BC990A}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{490F9F04-37A7-4476-B232-17DC55BC990A}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{490F9F04-37A7-4476-B232-17DC55BC990A}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+EndGlobal
