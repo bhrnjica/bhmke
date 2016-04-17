@@ -34,12 +34,12 @@ namespace MKELib
         /// </summary>
         /// <param name="E">Elasticity modul</param>
         /// <param name="nu">Poisson coeff</param>
-        public void calStiffness(double E, double nu)
+        public void calStiffness(double E, double nu, double t)
         {
             calBMatrix();
             calEMatrix(E,nu);
             var bT = Matrix.Transpose(bMatrix);
-            var btEb = bT * eMatrix * bMatrix;
+            var btEb = t* bT * eMatrix * bMatrix;
             kStiffness = bValue*bValue*eValue*btEb;
         }
         /// <summary>
@@ -50,6 +50,9 @@ namespace MKELib
             if (type == MKEElementType.triangle)
             {
                 bMatrix = new Matrix(3,6);
+                double a1 = nodes[1].x * nodes[2].y - nodes[2].x * nodes[1].y;
+                double a2 = nodes[2].x * nodes[0].y - nodes[0].x * nodes[2].y;
+                double a3 = nodes[0].x * nodes[1].y - nodes[1].x * nodes[0].y;
                 double b1 = nodes[1].y - nodes[2].y;
                 double b2 = nodes[2].y - nodes[0].y;
                 double b3 = nodes[0].y - nodes[1].y;

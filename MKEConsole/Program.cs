@@ -40,11 +40,12 @@ namespace MKEConsole
             Console.WriteLine("----- END------");
         }
 
-        private static List<MKEFElement> Problem1(List<MKENode> nodes, ref double E, ref double nu)
+        private static List<MKEFElement> Problem1(List<MKENode> nodes, ref double E, ref double nu, ref double t)
         {
             //material property
             E = 2.0e+11;
             nu = 0.3;
+            t = 0.01;
 
             var e = new List<MKEFElement>();
             var e1 = new MKEFElement(1);
@@ -63,7 +64,7 @@ namespace MKEConsole
             var n2 = new MKENode();
             n2.id = 2;
             n2.x = 0;
-            n2.y = 10;
+            n2.y = 0.10;
             //BC
             n2.u = 0;
             n2.v = 0;
@@ -71,8 +72,8 @@ namespace MKEConsole
 
             var n3 = new MKENode();
             n3.id = 3;
-            n3.x = 20;
-            n3.y = 10;
+            n3.x = 0.20;
+            n3.y = 0.10;
             //BC
             n3.fx = 5000;//BC
             n3.fy = 0;//BC
@@ -80,7 +81,7 @@ namespace MKEConsole
 
             var n4 = new MKENode();
             n4.id = 4;
-            n4.x = 20;
+            n4.x = 0.20;
             n4.y = 0;
             //BC
             n4.fx = 5000;//BC
@@ -95,12 +96,12 @@ namespace MKEConsole
             return e;
         }
       
-        private static List<MKEFElement> Problem2(List<MKENode> nodes, ref double E, ref double nu)
+        private static List<MKEFElement> Problem2(List<MKENode> nodes, ref double E, ref double nu, ref double t)
         {
             //material property
             E = 2.0e+11;
             nu = 0.25;
-
+            t = 0.015;
             var e = new List<MKEFElement>();
             var e1 = new MKEFElement(1);
             var e2 = new MKEFElement(2);
@@ -119,7 +120,7 @@ namespace MKEConsole
 
             var n2 = new MKENode();
             n2.id = 2;
-            n2.x = 750;
+            n2.x = 0.750;
             n2.y = 0;
 
             //BC at leaset one (displacement or load ) must be set to zero or boundary value.
@@ -130,8 +131,8 @@ namespace MKEConsole
 
             var n3 = new MKENode();
             n3.id = 3;
-            n3.x = 750;
-            n3.y = 500;
+            n3.x = 0.750;
+            n3.y = 0.500;
 
             //BC
             n3.fx = 50000;
@@ -141,7 +142,7 @@ namespace MKEConsole
             var n4 = new MKENode();
             n4.id = 4;
             n4.x = 0;
-            n4.y = 500;
+            n4.y = 0.500;
             //BC
             n4.u = 0;
             n4.v = 0;

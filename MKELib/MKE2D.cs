@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace MKELib
 {
-    public delegate List<MKEFElement> Problem(List<MKENode> nodes, ref double E, ref double nu);
+    public delegate List<MKEFElement> Problem(List<MKENode> nodes, ref double E, ref double nu, ref double t);
     /// <summary>
     /// Class for defining 2D Finite Element Problem
     /// </summary>
@@ -15,6 +15,7 @@ namespace MKELib
     {
         double E = 2.0e+11;
         double nu = 0.25;
+        double t = 1;//tickness 
 
         /// <summary>
         /// Solve 2D stress/strain problem usin Finite element method
@@ -24,10 +25,10 @@ namespace MKELib
         public Matrix Solve(Problem init)
         {
             List<MKENode> nodes = new List<MKENode>();
-            List<MKEFElement> eColl = init(nodes, ref E, ref nu);
+            List<MKEFElement> eColl = init(nodes, ref E, ref nu, ref t);
 
             //Global stiffness m atrix
-            Matrix gs = calculateGlobalStiffness(nodes, eColl, E, nu);
+            Matrix gs = calculateGlobalStiffness(nodes, eColl, E, nu, t);
 
             //Apply BC
             Matrix u = solveMKE(gs, nodes);
@@ -121,11 +122,11 @@ namespace MKELib
         /// <param name="E">MOdul of Elasticity</param>
         /// <param name="nu">Paisson coefficient</param>
         /// <returns></returns>
-        private Matrix calculateGlobalStiffness(List<MKENode> nodes, List<MKEFElement> eColl, double E, double nu)
+        private Matrix calculateGlobalStiffness(List<MKENode> nodes, List<MKEFElement> eColl, double E, double nu, double t)
         {
             //Calculate stiffness matrices for each finite element
             foreach (var e in eColl)
-                e.calStiffness(E, nu);
+                e.calStiffness(E, nu, t);
 
             //calculate number of row/cols of the global strifness matrix
             int iOrder = nodes.Count() * nodes[0].GetDof();
