@@ -16,6 +16,7 @@ namespace MKELib
         public Matrix bMatrix;
         public double eValue;
         public Matrix eMatrix;
+        public double tArea;//are of the triangle
         public Matrix kStiffness;
         /// <summary>
         /// Default constructor
@@ -34,13 +35,15 @@ namespace MKELib
         /// </summary>
         /// <param name="E">Elasticity modul</param>
         /// <param name="nu">Poisson coeff</param>
-        public void calStiffness(double E, double nu, double t)
+        public void calcStiffness(double E, double nu, double t)
         {
             calBMatrix();
             calEMatrix(E,nu);
             var bT = Matrix.Transpose(bMatrix);
-            var btEb = t* bT * eMatrix * bMatrix;
-            kStiffness = bValue*bValue*eValue*btEb;
+            var btEb1 =   eMatrix * bMatrix;
+            var btEb = bT * btEb1;
+            var s = t * tArea * eValue / (bValue *bValue);
+            kStiffness = s * btEb;
         }
         /// <summary>
         /// Calculation of the B matrix
@@ -59,7 +62,8 @@ namespace MKELib
                 double g1 = nodes[2].x - nodes[1].x;
                 double g2 = nodes[0].x - nodes[2].x;
                 double g3 = nodes[1].x - nodes[0].x;
-                bValue = 1.0 / (nodes[0].x * (nodes[1].y - nodes[2].y) + nodes[1].x * (nodes[2].y - nodes[0].y) + nodes[2].x * (nodes[0].y - nodes[1].y));
+                bValue = nodes[0].x * (nodes[1].y - nodes[2].y) + nodes[1].x * (nodes[2].y - nodes[0].y) + nodes[2].x * (nodes[0].y - nodes[1].y);
+                tArea = 0.5 * bValue;
                 bMatrix[0, 0] = b1; bMatrix[0, 1] = 0; bMatrix[0, 2] = b2; bMatrix[0, 3] = 0; bMatrix[0, 4] = b3; bMatrix[0, 5] = 0;
                 bMatrix[1, 0] = 0; bMatrix[1, 1] = g1; bMatrix[1, 2] = 0; bMatrix[1, 3] = g2; bMatrix[1, 4] = 0; bMatrix[1, 5] = g3;
                 bMatrix[2, 0] = g1; bMatrix[2, 1] = b1; bMatrix[2, 2] = g2; bMatrix[2, 3] = b2; bMatrix[2, 4] = g3; bMatrix[2, 5] = b3;

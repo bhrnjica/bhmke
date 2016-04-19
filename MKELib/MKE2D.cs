@@ -126,7 +126,7 @@ namespace MKELib
         {
             //Calculate stiffness matrices for each finite element
             foreach (var e in eColl)
-                e.calStiffness(E, nu, t);
+                e.calcStiffness(E, nu, t);
 
             //calculate number of row/cols of the global strifness matrix
             int iOrder = nodes.Count() * nodes[0].GetDof();

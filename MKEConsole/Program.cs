@@ -33,7 +33,7 @@ namespace MKEConsole
                     if (displName == "u")
                         Console.WriteLine("NodeId:{0}:\t {1}={2:G3},", u[i, 0], displName, u[i, 3], decimal.Round((decimal)u[i, 3], 6));
                     else
-                        Console.WriteLine("       \t\t {0}={1:G3} m.", displName, u[i, 3], decimal.Round((decimal)u[i, 3], 6));
+                        Console.WriteLine("       \t\t {0}={1:G3}", displName, u[i, 3], decimal.Round((decimal)u[i, 3], 6));
                 }
 
             }
@@ -48,8 +48,8 @@ namespace MKEConsole
             t = 0.01;
 
             var e = new List<MKEFElement>();
-            var e1 = new MKEFElement(1);
-            var e2 = new MKEFElement(2);
+            var e1 = new MKEFElement(1,MKEElementType.triangle, MKEPlaneType.stress);
+            var e2 = new MKEFElement(2, MKEElementType.triangle, MKEPlaneType.stress);
 
 
             var n1 = new MKENode();
@@ -99,12 +99,12 @@ namespace MKEConsole
         private static List<MKEFElement> Problem2(List<MKENode> nodes, ref double E, ref double nu, ref double t)
         {
             //material property
-            E = 2.0e+11;
+            E = 3.0e+7;
             nu = 0.25;
-            t = 0.015;
+            t = 0.036;
             var e = new List<MKEFElement>();
-            var e1 = new MKEFElement(1);
-            var e2 = new MKEFElement(2);
+            var e1 = new MKEFElement(1, MKEElementType.triangle, MKEPlaneType.stress);
+            var e2 = new MKEFElement(2, MKEElementType.triangle, MKEPlaneType.stress);
 
             var n1 = new MKENode();
             n1.id = 1;
@@ -120,36 +120,36 @@ namespace MKEConsole
 
             var n2 = new MKENode();
             n2.id = 2;
-            n2.x = 0.750;
-            n2.y = 0;
+            n2.x = 0;
+            n2.y = 160;
 
-            //BC at leaset one (displacement or load ) must be set to zero or boundary value.
-           // n1.u = 0;
+
+           // BC
             n2.v = 0;
-            n2.fx = 0;
+            n2.u = 0;
             nodes.Add(n2);
 
             var n3 = new MKENode();
             n3.id = 3;
-            n3.x = 0.750;
-            n3.y = 0.500;
+            n3.x = 120;
+            n3.y = 160;
 
             //BC
-            n3.fx = 50000;
+            n3.fx = 800;
             n3.fy = 0;
             nodes.Add(n3);
 
             var n4 = new MKENode();
             n4.id = 4;
-            n4.x = 0;
-            n4.y = 0.500;
+            n4.x = 120;
+            n4.y = 0;
             //BC
-            n4.u = 0;
-            n4.v = 0;
+            n4.fx = 800;
+            n4.fy = 0;
             nodes.Add(n4);
 
-            e1.nodes.Add(n1); e1.nodes.Add(n3); e1.nodes.Add(n4);
-            e2.nodes.Add(n1); e2.nodes.Add(n2); e2.nodes.Add(n3);
+            e1.nodes.Add(n1); e1.nodes.Add(n3); e1.nodes.Add(n2);
+            e2.nodes.Add(n1); e2.nodes.Add(n4); e2.nodes.Add(n3);
 
             //
             e.Add(e1);
