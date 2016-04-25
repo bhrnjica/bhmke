@@ -12,7 +12,7 @@ namespace MKEConsole
         static void Main(string[] args)
         {
             MKE2D _2Dproblem1 = new MKE2D();
-            var u = _2Dproblem1.Solve(Problem2);
+            var u = _2Dproblem1.Solve(Problem3);
             printDisplacements(u);
 
 
@@ -96,6 +96,7 @@ namespace MKEConsole
             return e;
         }
       
+
         private static List<MKEFElement> Problem2(List<MKENode> nodes, ref double E, ref double nu, ref double t)
         {
             //material property
@@ -155,6 +156,72 @@ namespace MKEConsole
             e.Add(e1);
             e.Add(e2);
 
+            return e;
+        }
+
+        //
+        //https://onedrive.live.com/edit.aspx?cid=8b11bbbf3f0ed903&id=documents&resid=8B11BBBF3F0ED903!69817&app=OneNote&&wd=target%28%2F%2FSedmica%209.one%7C4eb47f0f-9cd2-4ee9-a70c-c3b5942f23d4%2FReddy%20Zadatak%7C074e3a36-a77d-4191-a1f9-1ceef1ccc8e9%2F%29
+        //
+        private static List<MKEFElement> Problem3(List<MKENode> nodes, ref double E, ref double nu, ref double t)
+        {
+            //material property
+            E = 30.0e+6;//psi
+            nu = 0.25;
+            t = 0.036;//plate thickness
+     double a = 120;// inches
+     double b = 160;// inches
+     double p0 = 10;//lb/in
+
+            //
+            var e = new List<MKEFElement>();
+            var e1 = new MKEFElement(1, MKEElementType.triangle, MKEPlaneType.stress);
+            var e2 = new MKEFElement(2, MKEElementType.triangle, MKEPlaneType.stress);
+
+
+            var n1 = new MKENode();
+            n1.id = 1;
+            n1.x = 0;
+            n1.y = 0;
+            //BC
+            n1.u = 0;
+            n1.v = 0;
+            nodes.Add(n1);
+
+            var n2 = new MKENode();
+            n2.id = 2;
+            n2.x = a;
+            n2.y = 0;
+
+            //Boundary condition
+            n2.fx = p0*b/2.0;//BC
+            n2.fy = 0;//BC
+            nodes.Add(n2);
+
+            var n3 = new MKENode();
+            n3.id = 3;
+            n3.x = 0;
+            n3.y = b;
+
+            //Boundary condition
+
+            n3.u = 0;//BC
+            n3.v = 0;//BC
+            nodes.Add(n3);
+
+            var n4 = new MKENode();
+            n4.id = 4;
+            n4.x = a;
+            n4.y = b;
+            //BC
+            n4.fx = p0 * b / 2.0;//BC
+            n4.fy = 0;//BC
+            nodes.Add(n4);
+
+            e1.nodes.Add(n1); e1.nodes.Add(n2); e1.nodes.Add(n4);
+            e2.nodes.Add(n1); e2.nodes.Add(n4); e2.nodes.Add(n3);
+            //
+            e.Add(e1);
+            e.Add(e2);
             return e;
         }
 
