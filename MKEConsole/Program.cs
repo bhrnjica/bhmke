@@ -12,7 +12,7 @@ namespace MKEConsole
         static void Main(string[] args)
         {
             MKE2D _2Dproblem1 = new MKE2D();
-            var u = _2Dproblem1.Solve(Problem3);
+            var u = _2Dproblem1.Solve(Problem4);
             printDisplacements(u);
 
 
@@ -224,6 +224,96 @@ namespace MKEConsole
             e.Add(e2);
             return e;
         }
+
+        private static List<MKEFElement> Problem4(List<MKENode> nodes, ref double E, ref double nu, ref double t)
+        {
+            //material property
+            E = 2.0e+11;//
+            nu = 0.3;
+            t = 0.01;//m
+           
+
+            //
+            var e = new List<MKEFElement>();
+            var e1 = new MKEFElement(1, MKEElementType.triangle, MKEPlaneType.stress);
+            var e2 = new MKEFElement(2, MKEElementType.triangle, MKEPlaneType.stress);
+            var e3 = new MKEFElement(3, MKEElementType.triangle, MKEPlaneType.stress);
+            var e4 = new MKEFElement(4, MKEElementType.triangle, MKEPlaneType.stress);
+
+
+            var n1 = new MKENode();
+            n1.id = 1;
+            n1.x = 0;
+            n1.y = 0;
+            
+            //Boundary condition
+            n1.u = 0;//BC
+            n1.v = 0;//BC
+
+            nodes.Add(n1);
+
+            var n2 = new MKENode();
+            n2.id = 2;
+            n2.x = 0.1;
+            n2.y = 0;
+
+            //Boundary condition
+            n2.fx = 0;//BC
+            n2.fy = 0;//BC
+            nodes.Add(n2);
+
+            var n3 = new MKENode();
+            n3.id = 3;
+            n3.x = 0.2;
+            n3.y = 0;
+
+            //Boundary condition
+            n3.fx = 5000;//BC
+            n3.fy = 0;//BC
+            nodes.Add(n3);
+
+            var n4 = new MKENode();
+            n4.id = 4;
+            n4.x = 0.2;
+            n4.y = 0.1;
+            //BC
+            n4.fx = 5000;//BC
+            n4.fy = 0;//BC
+            nodes.Add(n4);
+
+            var n5 = new MKENode();
+            n5.id = 5;
+            n5.x = 0.1;
+            n5.y = 0.1;
+            //BC
+            n5.fx = 0;//BC
+            n5.fy = 0;//BC
+            nodes.Add(n5);
+
+            var n6 = new MKENode();
+            n6.id = 6;
+            n6.x = 0;
+            n6.y = 0.1;
+            //BC
+            n6.u = 0;//BC
+            n6.v = 0;//BC
+            nodes.Add(n6);
+
+            //constructing finite elements
+            e1.nodes.Add(n1); e1.nodes.Add(n2); e1.nodes.Add(n6);
+            e2.nodes.Add(n2); e2.nodes.Add(n3); e2.nodes.Add(n5);
+            e3.nodes.Add(n3); e3.nodes.Add(n4); e3.nodes.Add(n5);
+            e4.nodes.Add(n5); e4.nodes.Add(n6); e4.nodes.Add(n2);
+
+            //element collection
+            e.Add(e1);
+            e.Add(e2);
+            e.Add(e3);
+            e.Add(e4);
+            return e;
+        }
+
+
 
     }
 }
