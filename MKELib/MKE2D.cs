@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Globalization;
+using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -16,25 +17,50 @@ namespace MKELib
         double E = 2.0e+11;
         double nu = 0.25;
         double t = 1;//tickness 
+        StreamWriter stream = null;
 
+        public MKE2D(StreamWriter s = null)
+        {
+            stream = s;
+        }
         /// <summary>
         /// Solve 2D stress/strain problem usin Finite element method
         /// </summary>
         /// <param name="init"></param>
+        /// <param name="resultFilePAth"> file path for result output</param>
         /// <returns></returns>
         public Matrix Solve(Problem init)
         {
-            List<MKENode> nodes = new List<MKENode>();
+            //call callback function to initialize the problem
+            var nodes = new List<MKENode>();
             List<MKEFElement> eColl = init(nodes, ref E, ref nu, ref t);
 
             //Global stiffness m atrix
             Matrix gs = calculateGlobalStiffness(nodes, eColl, E, nu, t);
 
+            //write global matrix
+            if(stream!=null)
+            {
+                outputStifness(gs);
+            }
+
             //Apply BC
             Matrix u = solveMKE(gs, nodes);
 
+
             //Solve System of equation
             return u;
+        }
+
+        private void outputStifness(Matrix gs)
+        {
+            if (stream != null)
+            {
+                stream.WriteLine("******************START ** 2D SOLVER ** START******************");
+                stream.WriteLine("******* Global Stifness matrix***********");
+                stream.WriteLine("{0}", gs.ToString());
+                stream.WriteLine(" ");
+            }
         }
 
         /// <summary>
@@ -126,7 +152,13 @@ namespace MKELib
         {
             //Calculate stiffness matrices for each finite element
             foreach (var e in eColl)
+            {
                 e.calcStiffness(E, nu, t);
+                //output results for each finite element
+                if(stream!=null)
+                    e.WriteMatrices(stream);
+            }
+                
 
             //calculate number of row/cols of the global strifness matrix
             int iOrder = nodes.Count() * nodes[0].GetDof();

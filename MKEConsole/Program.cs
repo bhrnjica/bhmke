@@ -1,6 +1,7 @@
 ﻿using MKELib;
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -11,10 +12,13 @@ namespace MKEConsole
     {
         static void Main(string[] args)
         {
-            MKE2D _2Dproblem1 = new MKE2D();
-            var u = _2Dproblem1.Solve(Problem4);
-            printDisplacements(u);
-
+            var fileName = @"c://users/bhrnjica.DAENET/Desktop/mke.txt";
+            using (StreamWriter tw = new StreamWriter(fileName))
+            {
+                MKE2D _2Dproblem1 = new MKE2D(tw);
+                var u = _2Dproblem1.Solve(Problem4);
+                printDisplacements(u);
+            }
 
             Console.Read();
         }

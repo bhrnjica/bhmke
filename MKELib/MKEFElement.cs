@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -44,6 +45,7 @@ namespace MKELib
             var btEb = bT * btEb1;
             var s = t * tArea * eValue / (bValue *bValue);
             kStiffness = s * btEb;
+
         }
         /// <summary>
         /// Calculation of the B matrix
@@ -99,6 +101,49 @@ namespace MKELib
             }
             else
                 throw new Exception("Not supported type!");
+        }
+
+        internal void WriteMatrices(StreamWriter tw)
+        {
+            if (tw!=null)
+            {
+                tw.WriteLine("******************START **  FE_ID={0}  ** START******************", id);
+                tw.WriteLine("Type={0}", type);
+                tw.WriteLine("PlaneType={0}", pType);
+                tw.WriteLine("A={0}", tArea);
+                //nodes
+                tw.Write("Nodes:(ID; X; Y)={");
+                foreach (var n in nodes)
+                {
+                    tw.Write("({0}; {1}; {2})", n.id, n.x, n.y);
+                }
+                tw.Write("}");
+
+                //B Matrix
+                tw.WriteLine(" ");
+                tw.WriteLine("*******B Matrix*****");
+                tw.WriteLine(" ");
+                tw.WriteLine("B={0}* [", bValue);
+                tw.WriteLine("{0}", bMatrix.ToString());
+                tw.WriteLine("]");
+
+                //E matrix
+                tw.WriteLine("*******E Matrix*****");
+                tw.WriteLine("");
+                tw.WriteLine("E={0}* [", eValue);
+                tw.WriteLine("{0}", eMatrix.ToString());
+                tw.WriteLine("]");
+
+                //Stiffness matrix
+                tw.WriteLine("*******Stifness Matrix*****");
+                tw.WriteLine("");
+                tw.WriteLine("{0}", kStiffness.ToString());
+                //End of write
+                tw.WriteLine("******************END **  FE_ID={0}  ** END******************", id);
+                tw.WriteLine("");
+                tw.WriteLine("");
+            }
+            
         }
     }
 }
