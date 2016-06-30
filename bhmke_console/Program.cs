@@ -1,21 +1,25 @@
-﻿using MKELib;
+﻿using mke_core;
 using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
-using System.Text;
 using System.Threading.Tasks;
 
-namespace MKEConsole
+namespace bhmke_console
 {
-    class Program
+    public class Program
     {
-        static void Main(string[] args)
+        public static void Main(string[] args)
         {
             var fileName = @"c://users/bhrnjica.DAENET/Desktop/mke.txt";
-            using (StreamWriter tw = new StreamWriter(fileName))
+
+            var logFile = System.IO.File.Create(fileName);
+            var logWriter = new System.IO.StreamWriter(logFile);
+
+
+            using (StreamWriter tw = new StreamWriter(logWriter.BaseStream))
             {
-                MKE2D _2Dproblem1 = new MKE2D(tw);
+                FeProblem2d _2Dproblem1 = new FeProblem2d(tw);
                 var u = _2Dproblem1.Solve(Problem4);
                 printDisplacements(u);
             }
@@ -35,28 +39,28 @@ namespace MKEConsole
                     var val = Decimal.Parse(u[i, 3].ToString(), System.Globalization.NumberStyles.Any);
 
                     if (displName == "u")
-                        Console.WriteLine("NodeId:{0}:\t {1}={2:G3},", u[i, 0], displName, u[i, 3], decimal.Round((decimal)u[i, 3], 6));
+                        Console.WriteLine("NodeId:{0}:\t {1}={2:G3},", u[i, 0], displName, u[i, 3], u[i, 3]);
                     else
-                        Console.WriteLine("       \t\t {0}={1:G3}", displName, u[i, 3], decimal.Round((decimal)u[i, 3], 6));
+                        Console.WriteLine("       \t\t {0}={1:G3}", displName, u[i, 3], u[i, 3]);
                 }
 
             }
             Console.WriteLine("----- END------");
         }
 
-        private static List<MKEFElement> Problem1(List<MKENode> nodes, ref double E, ref double nu, ref double t)
+        private static List<FElement> Problem1(List<Node> nodes, ref double E, ref double nu, ref double t)
         {
             //material property
             E = 2.0e+11;
             nu = 0.3;
             t = 0.01;
 
-            var e = new List<MKEFElement>();
-            var e1 = new MKEFElement(1,MKEElementType.triangle, MKEPlaneType.stress);
-            var e2 = new MKEFElement(2, MKEElementType.triangle, MKEPlaneType.stress);
+            var e = new List<FElement>();
+            var e1 = new FElement(1, MKEElementType.triangle, MKEPlaneType.stress);
+            var e2 = new FElement(2, MKEElementType.triangle, MKEPlaneType.stress);
 
 
-            var n1 = new MKENode();
+            var n1 = new Node();
             n1.id = 1;
             n1.x = 0;
             n1.y = 0;
@@ -65,7 +69,7 @@ namespace MKEConsole
             n1.v = 0;
             nodes.Add(n1);
 
-            var n2 = new MKENode();
+            var n2 = new Node();
             n2.id = 2;
             n2.x = 0;
             n2.y = 0.10;
@@ -74,7 +78,7 @@ namespace MKEConsole
             n2.v = 0;
             nodes.Add(n2);
 
-            var n3 = new MKENode();
+            var n3 = new Node();
             n3.id = 3;
             n3.x = 0.20;
             n3.y = 0.10;
@@ -83,7 +87,7 @@ namespace MKEConsole
             n3.fy = 0;//BC
             nodes.Add(n3);
 
-            var n4 = new MKENode();
+            var n4 = new Node();
             n4.id = 4;
             n4.x = 0.20;
             n4.y = 0;
@@ -99,19 +103,19 @@ namespace MKEConsole
             e.Add(e2);
             return e;
         }
-      
 
-        private static List<MKEFElement> Problem2(List<MKENode> nodes, ref double E, ref double nu, ref double t)
+
+        private static List<FElement> Problem2(List<Node> nodes, ref double E, ref double nu, ref double t)
         {
             //material property
             E = 3.0e+7;
             nu = 0.25;
             t = 0.036;
-            var e = new List<MKEFElement>();
-            var e1 = new MKEFElement(1, MKEElementType.triangle, MKEPlaneType.stress);
-            var e2 = new MKEFElement(2, MKEElementType.triangle, MKEPlaneType.stress);
+            var e = new List<FElement>();
+            var e1 = new FElement(1, MKEElementType.triangle, MKEPlaneType.stress);
+            var e2 = new FElement(2, MKEElementType.triangle, MKEPlaneType.stress);
 
-            var n1 = new MKENode();
+            var n1 = new Node();
             n1.id = 1;
             n1.x = 0;
             n1.y = 0;
@@ -123,18 +127,18 @@ namespace MKEConsole
 
             nodes.Add(n1);
 
-            var n2 = new MKENode();
+            var n2 = new Node();
             n2.id = 2;
             n2.x = 0;
             n2.y = 160;
 
 
-           // BC
+            // BC
             n2.v = 0;
             n2.u = 0;
             nodes.Add(n2);
 
-            var n3 = new MKENode();
+            var n3 = new Node();
             n3.id = 3;
             n3.x = 120;
             n3.y = 160;
@@ -144,7 +148,7 @@ namespace MKEConsole
             n3.fy = 0;
             nodes.Add(n3);
 
-            var n4 = new MKENode();
+            var n4 = new Node();
             n4.id = 4;
             n4.x = 120;
             n4.y = 0;
@@ -166,23 +170,23 @@ namespace MKEConsole
         //
         //https://onedrive.live.com/edit.aspx?cid=8b11bbbf3f0ed903&id=documents&resid=8B11BBBF3F0ED903!69817&app=OneNote&&wd=target%28%2F%2FSedmica%209.one%7C4eb47f0f-9cd2-4ee9-a70c-c3b5942f23d4%2FReddy%20Zadatak%7C074e3a36-a77d-4191-a1f9-1ceef1ccc8e9%2F%29
         //
-        private static List<MKEFElement> Problem3(List<MKENode> nodes, ref double E, ref double nu, ref double t)
+        private static List<FElement> Problem3(List<Node> nodes, ref double E, ref double nu, ref double t)
         {
             //material property
             E = 30.0e+6;//psi
             nu = 0.25;
             t = 0.036;//plate thickness
-     double a = 120;// inches
-     double b = 160;// inches
-     double p0 = 10;//lb/in
+            double a = 120;// inches
+            double b = 160;// inches
+            double p0 = 10;//lb/in
 
             //
-            var e = new List<MKEFElement>();
-            var e1 = new MKEFElement(1, MKEElementType.triangle, MKEPlaneType.stress);
-            var e2 = new MKEFElement(2, MKEElementType.triangle, MKEPlaneType.stress);
+            var e = new List<FElement>();
+            var e1 = new FElement(1, MKEElementType.triangle, MKEPlaneType.stress);
+            var e2 = new FElement(2, MKEElementType.triangle, MKEPlaneType.stress);
 
 
-            var n1 = new MKENode();
+            var n1 = new Node();
             n1.id = 1;
             n1.x = 0;
             n1.y = 0;
@@ -191,17 +195,17 @@ namespace MKEConsole
             n1.v = 0;
             nodes.Add(n1);
 
-            var n2 = new MKENode();
+            var n2 = new Node();
             n2.id = 2;
             n2.x = a;
             n2.y = 0;
 
             //Boundary condition
-            n2.fx = p0*b/2.0;//BC
+            n2.fx = p0 * b / 2.0;//BC
             n2.fy = 0;//BC
             nodes.Add(n2);
 
-            var n3 = new MKENode();
+            var n3 = new Node();
             n3.id = 3;
             n3.x = 0;
             n3.y = b;
@@ -212,7 +216,7 @@ namespace MKEConsole
             n3.v = 0;//BC
             nodes.Add(n3);
 
-            var n4 = new MKENode();
+            var n4 = new Node();
             n4.id = 4;
             n4.x = a;
             n4.y = b;
@@ -229,34 +233,34 @@ namespace MKEConsole
             return e;
         }
 
-        private static List<MKEFElement> Problem4(List<MKENode> nodes, ref double E, ref double nu, ref double t)
+        private static List<FElement> Problem4(List<Node> nodes, ref double E, ref double nu, ref double t)
         {
             //material property
             E = 2.0e+11;//
             nu = 0.3;
             t = 0.01;//m
-           
+
 
             //
-            var e = new List<MKEFElement>();
-            var e1 = new MKEFElement(1, MKEElementType.triangle, MKEPlaneType.stress);
-            var e2 = new MKEFElement(2, MKEElementType.triangle, MKEPlaneType.stress);
-            var e3 = new MKEFElement(3, MKEElementType.triangle, MKEPlaneType.stress);
-            var e4 = new MKEFElement(4, MKEElementType.triangle, MKEPlaneType.stress);
+            var e = new List<FElement>();
+            var e1 = new FElement(1, MKEElementType.triangle, MKEPlaneType.stress);
+            var e2 = new FElement(2, MKEElementType.triangle, MKEPlaneType.stress);
+            var e3 = new FElement(3, MKEElementType.triangle, MKEPlaneType.stress);
+            var e4 = new FElement(4, MKEElementType.triangle, MKEPlaneType.stress);
 
 
-            var n1 = new MKENode();
+            var n1 = new Node();
             n1.id = 1;
             n1.x = 0;
             n1.y = 0;
-            
+
             //Boundary condition
             n1.u = 0;//BC
             n1.v = 0;//BC
 
             nodes.Add(n1);
 
-            var n2 = new MKENode();
+            var n2 = new Node();
             n2.id = 2;
             n2.x = 0.1;
             n2.y = 0;
@@ -266,7 +270,7 @@ namespace MKEConsole
             n2.fy = 0;//BC
             nodes.Add(n2);
 
-            var n3 = new MKENode();
+            var n3 = new Node();
             n3.id = 3;
             n3.x = 0.2;
             n3.y = 0;
@@ -276,7 +280,7 @@ namespace MKEConsole
             n3.fy = 0;//BC
             nodes.Add(n3);
 
-            var n4 = new MKENode();
+            var n4 = new Node();
             n4.id = 4;
             n4.x = 0.2;
             n4.y = 0.1;
@@ -285,7 +289,7 @@ namespace MKEConsole
             n4.fy = 0;//BC
             nodes.Add(n4);
 
-            var n5 = new MKENode();
+            var n5 = new Node();
             n5.id = 5;
             n5.x = 0.1;
             n5.y = 0.1;
@@ -294,7 +298,7 @@ namespace MKEConsole
             n5.fy = 0;//BC
             nodes.Add(n5);
 
-            var n6 = new MKENode();
+            var n6 = new Node();
             n6.id = 6;
             n6.x = 0;
             n6.y = 0.1;
@@ -316,7 +320,6 @@ namespace MKEConsole
             e.Add(e4);
             return e;
         }
-
 
 
     }

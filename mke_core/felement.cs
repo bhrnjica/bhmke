@@ -2,14 +2,13 @@
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
-using System.Text;
 using System.Threading.Tasks;
 
-namespace MKELib
+namespace mke_core
 {
-    public class MKEFElement
+    public class FElement
     {
-        public List<MKENode> nodes;
+        public List<Node> nodes;
         public int id;
         public MKEElementType type;
         public MKEPlaneType pType;
@@ -24,12 +23,12 @@ namespace MKELib
         /// </summary>
         /// <param name="elemId"></param>
         /// <param name="plane"></param>
-        public MKEFElement(int elemId=0, MKEElementType t= MKEElementType.triangle, MKEPlaneType plane = MKEPlaneType.stress)
+        public FElement(int elemId = 0, MKEElementType t = MKEElementType.triangle, MKEPlaneType plane = MKEPlaneType.stress)
         {
             id = elemId;
             pType = plane;
             type = t;
-            nodes = new List<MKENode>();
+            nodes = new List<Node>();
         }
         /// <summary>
         /// Calculate stifness matrix from  b and e matix
@@ -39,11 +38,11 @@ namespace MKELib
         public void calcStiffness(double E, double nu, double t)
         {
             calBMatrix();
-            calEMatrix(E,nu);
+            calEMatrix(E, nu);
             var bT = Matrix.Transpose(bMatrix);
-            var btEb1 =   eMatrix * bMatrix;
+            var btEb1 = eMatrix * bMatrix;
             var btEb = bT * btEb1;
-            var s = t * tArea * eValue / (bValue *bValue);
+            var s = t * tArea * eValue / (bValue * bValue);
             kStiffness = s * btEb;
 
         }
@@ -54,7 +53,7 @@ namespace MKELib
         {
             if (type == MKEElementType.triangle)
             {
-                bMatrix = new Matrix(3,6);
+                bMatrix = new Matrix(3, 6);
                 double a1 = nodes[1].x * nodes[2].y - nodes[2].x * nodes[1].y;
                 double a2 = nodes[2].x * nodes[0].y - nodes[0].x * nodes[2].y;
                 double a3 = nodes[0].x * nodes[1].y - nodes[1].x * nodes[0].y;
@@ -82,21 +81,21 @@ namespace MKELib
         {
             if (type == MKEElementType.triangle)
             {
-                if(pType== MKEPlaneType.stress)
+                if (pType == MKEPlaneType.stress)
                 {
-                    eValue = E / (1.0 - nu*nu);
+                    eValue = E / (1.0 - nu * nu);
                     eMatrix = new Matrix(3, 3);
                     eMatrix[0, 0] = 1.0; eMatrix[0, 1] = nu; eMatrix[0, 2] = 0;
                     eMatrix[1, 0] = nu; eMatrix[1, 1] = 1.0; eMatrix[1, 2] = 0;
-                    eMatrix[2, 0] = 0; eMatrix[2, 1] = 0; eMatrix[2, 2] = (1.0-nu)/2.0;
+                    eMatrix[2, 0] = 0; eMatrix[2, 1] = 0; eMatrix[2, 2] = (1.0 - nu) / 2.0;
                 }
                 else//plane strain state
                 {
-                    eValue = E / ((1.0 + nu)*(1.0-2.0*nu));
+                    eValue = E / ((1.0 + nu) * (1.0 - 2.0 * nu));
                     eMatrix = new Matrix(3, 3);
-                    eMatrix[0, 0] = 1.0-nu; eMatrix[0, 1] = nu; eMatrix[0, 2] = 0;
-                    eMatrix[1, 0] = nu; eMatrix[1, 1] = 1.0-nu; eMatrix[1, 2] = 0;
-                    eMatrix[2, 0] = 0; eMatrix[2, 1] = 0; eMatrix[2, 2] = (1.0 - 2.0*nu) / 2.0;
+                    eMatrix[0, 0] = 1.0 - nu; eMatrix[0, 1] = nu; eMatrix[0, 2] = 0;
+                    eMatrix[1, 0] = nu; eMatrix[1, 1] = 1.0 - nu; eMatrix[1, 2] = 0;
+                    eMatrix[2, 0] = 0; eMatrix[2, 1] = 0; eMatrix[2, 2] = (1.0 - 2.0 * nu) / 2.0;
                 }
             }
             else
@@ -105,7 +104,7 @@ namespace MKELib
 
         internal void WriteMatrices(StreamWriter tw)
         {
-            if (tw!=null)
+            if (tw != null)
             {
                 tw.WriteLine("******************START **  FE_ID={0}  ** START******************", id);
                 tw.WriteLine("Type={0}", type);
@@ -143,7 +142,7 @@ namespace MKELib
                 tw.WriteLine("");
                 tw.WriteLine("");
             }
-            
+
         }
     }
 }

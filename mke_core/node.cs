@@ -1,16 +1,15 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
 using System.Threading.Tasks;
 
-namespace MKELib
+namespace mke_core
 {
     /// <summary>
     /// Clas provides basic functionality for node 
     /// </summary>
-    public class MKENode
-    { 
+    public class Node
+    {
         //identification       
         public int id;
         public MKENodeType type;
@@ -32,7 +31,7 @@ namespace MKELib
         public double myz;
 
         //
-        public MKENode(MKENodeType t= MKENodeType.uv)
+        public Node(MKENodeType t = MKENodeType.uv)
         {
             id = 0;
             type = t;
@@ -49,7 +48,7 @@ namespace MKELib
                 return 3;
             else if (type == MKENodeType.uvufvf)
                 return 4;
-            else 
+            else
                 throw new Exception("Not suported node type!");
 
         }

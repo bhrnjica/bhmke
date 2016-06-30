@@ -1,25 +1,23 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Globalization;
 using System.IO;
 using System.Linq;
-using System.Text;
 using System.Threading.Tasks;
 
-namespace MKELib
+namespace mke_core
 {
-    public delegate List<MKEFElement> Problem(List<MKENode> nodes, ref double E, ref double nu, ref double t);
+    public delegate List<FElement> Problem(List<Node> nodes, ref double E, ref double nu, ref double t);
     /// <summary>
     /// Class for defining 2D Finite Element Problem
     /// </summary>
-    public class MKE2D
+    public class FeProblem2d
     {
         double E = 2.0e+11;
         double nu = 0.25;
         double t = 1;//tickness 
         StreamWriter stream = null;
 
-        public MKE2D(StreamWriter s = null)
+        public FeProblem2d(StreamWriter s = null)
         {
             stream = s;
         }
@@ -32,14 +30,14 @@ namespace MKELib
         public Matrix Solve(Problem init)
         {
             //call callback function to initialize the problem
-            var nodes = new List<MKENode>();
-            List<MKEFElement> eColl = init(nodes, ref E, ref nu, ref t);
+            var nodes = new List<Node>();
+            List<FElement> eColl = init(nodes, ref E, ref nu, ref t);
 
             //Global stiffness m atrix
             Matrix gs = calculateGlobalStiffness(nodes, eColl, E, nu, t);
 
             //write global matrix
-            if(stream!=null)
+            if (stream != null)
             {
                 outputStifness(gs);
             }
@@ -69,7 +67,7 @@ namespace MKELib
         /// <param name="gs">global stiffness matrix</param>
         /// <param name="nodes">defined nodes</param>
         /// <returns></returns>
-        private Matrix solveMKE(Matrix gs, List<MKENode> nodes)
+        private Matrix solveMKE(Matrix gs, List<Node> nodes)
         {
             int count = getMatrixStiffOrder(nodes);
             Matrix f = new Matrix(count, 4);
@@ -112,18 +110,18 @@ namespace MKELib
                 }
             }
 
-           //calculate unknown displacements
-           var u = A.SolveWith(b);
+            //calculate unknown displacements
+            var u = A.SolveWith(b);
 
             //format calculated displacement for printing
             int index = 0;
-            for (int i= 0; i < count; i++)
+            for (int i = 0; i < count; i++)
             {
                 if (double.IsNaN(f[i, 3]))
                 {
-                    f[i, 3] = u[index,0];
+                    f[i, 3] = u[index, 0];
                     index++;
-                }      
+                }
             }
 
             //return suitable format of calculated displacements and loads
@@ -135,7 +133,7 @@ namespace MKELib
         /// </summary>
         /// <param name="nodes">nodes</param>
         /// <returns></returns>
-        private int getMatrixStiffOrder(List<MKENode> nodes)
+        private int getMatrixStiffOrder(List<Node> nodes)
         {
             return nodes.Count() * nodes[0].GetDof();
         }
@@ -148,17 +146,17 @@ namespace MKELib
         /// <param name="E">MOdul of Elasticity</param>
         /// <param name="nu">Paisson coefficient</param>
         /// <returns></returns>
-        private Matrix calculateGlobalStiffness(List<MKENode> nodes, List<MKEFElement> eColl, double E, double nu, double t)
+        private Matrix calculateGlobalStiffness(List<Node> nodes, List<FElement> eColl, double E, double nu, double t)
         {
             //Calculate stiffness matrices for each finite element
             foreach (var e in eColl)
             {
                 e.calcStiffness(E, nu, t);
                 //output results for each finite element
-                if(stream!=null)
+                if (stream != null)
                     e.WriteMatrices(stream);
             }
-                
+
 
             //calculate number of row/cols of the global strifness matrix
             int iOrder = nodes.Count() * nodes[0].GetDof();
@@ -230,7 +228,7 @@ namespace MKELib
         /// <param name="f"> matix of node loads</param>
         /// <param name="nodes">nodes</param>
         /// <param name="index">collection index</param>
-        private void setExternalLoads(Matrix f, MKENode nodes, int index)
+        private void setExternalLoads(Matrix f, Node nodes, int index)
         {
             if (nodes.type == MKENodeType.uv)
             {
@@ -243,7 +241,7 @@ namespace MKELib
                 f[index + 1, 1] = (int)nodes.type;
 
                 //loads
-                f[index, 2] = nodes.fx;              
+                f[index, 2] = nodes.fx;
                 f[index + 1, 2] = nodes.fy;
 
                 //displacements
