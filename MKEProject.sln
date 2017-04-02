@@ -1,11 +1,13 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio 14
-VisualStudioVersion = 14.0.25420.1
+# Visual Studio 15
+VisualStudioVersion = 15.0.26228.12
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{8BB2217D-0F2D-49D1-97BC-3654ED321F3B}") = "bhmke_console", "bhmke_console\bhmke_console.xproj", "{D15A3E4D-F224-4683-A509-5A76A1033220}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "bhmke_console", "bhmke_console\bhmke_console.csproj", "{D15A3E4D-F224-4683-A509-5A76A1033220}"
 EndProject
-Project("{8BB2217D-0F2D-49D1-97BC-3654ED321F3B}") = "mke_core", "mke_core\mke_core.xproj", "{14F236E9-388F-4B71-A4C5-3C6F259786F7}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "mke_core", "mke_core\mke_core.csproj", "{14F236E9-388F-4B71-A4C5-3C6F259786F7}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Space1DFiniteElements", "Space1DFiniteElements\Space1DFiniteElements.csproj", "{315A837F-7D7D-44CD-943E-1072E8BA8C04}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -21,6 +23,10 @@ Global
 		{14F236E9-388F-4B71-A4C5-3C6F259786F7}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{14F236E9-388F-4B71-A4C5-3C6F259786F7}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{14F236E9-388F-4B71-A4C5-3C6F259786F7}.Release|Any CPU.Build.0 = Release|Any CPU
+		{315A837F-7D7D-44CD-943E-1072E8BA8C04}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{315A837F-7D7D-44CD-943E-1072E8BA8C04}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{315A837F-7D7D-44CD-943E-1072E8BA8C04}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{315A837F-7D7D-44CD-943E-1072E8BA8C04}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
