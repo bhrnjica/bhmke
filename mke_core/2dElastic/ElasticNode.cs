@@ -6,17 +6,11 @@ using System.Threading.Tasks;
 namespace mke_core
 {
     /// <summary>
-    /// Clas provides basic functionality for node 
+    /// Class provides basic functionality for node 
     /// </summary>
-    public class Node
+    public class ElasticNode : NodeBase
     {
-        //identification       
-        public int id;
-        public MKENodeType type;
-
-        //coordinate
-        public double x;
-        public double y;
+        
 
         //displacements
         public double u;
@@ -31,25 +25,25 @@ namespace mke_core
         public double myz;
 
         //
-        public Node(MKENodeType t = MKENodeType.uv)
+        public ElasticNode(MKENodeType t = MKENodeType.uv)
         {
             id = 0;
-            type = t;
-            x = y = u = v = fiu = fiv = fx = fy = mxz = myz = double.NaN;
+            Type = t;
+            x1 = x2 = u = v = fiu = fiv = fx = fy = mxz = myz = double.NaN;
         }
 
         public int GetDof()
         {
-            if (type == MKENodeType.uv)
+            if (Type == MKENodeType.uv)
                 return 2;
-            else if (type == MKENodeType.uvuf)
+            else if (Type == MKENodeType.uvuf)
                 return 3;
-            else if (type == MKENodeType.uvvf)
+            else if (Type == MKENodeType.uvvf)
                 return 3;
-            else if (type == MKENodeType.uvufvf)
+            else if (Type == MKENodeType.uvufvf)
                 return 4;
             else
-                throw new Exception("Not suported node type!");
+                throw new Exception("Not supported node type!");
 
         }
     }

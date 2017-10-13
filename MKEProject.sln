@@ -1,13 +1,21 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 15
-VisualStudioVersion = 15.0.26228.12
+VisualStudioVersion = 15.0.26730.16
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "bhmke_console", "bhmke_console\bhmke_console.csproj", "{D15A3E4D-F224-4683-A509-5A76A1033220}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "mke_core", "mke_core\mke_core.csproj", "{14F236E9-388F-4B71-A4C5-3C6F259786F7}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Space1DFiniteElements", "Space1DFiniteElements\Space1DFiniteElements.csproj", "{315A837F-7D7D-44CD-943E-1072E8BA8C04}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Space1DFiniteElements", "Space1DFiniteElements\Space1DFiniteElements.csproj", "{315A837F-7D7D-44CD-943E-1072E8BA8C04}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "HeatTransfer2D", "HeatTransfer2D\HeatTransfer2D.csproj", "{1C7CCC53-EA25-4E1E-BC38-08274B8E55A7}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "core", "core", "{DEA73BF5-74BC-4F53-8603-48F1D37E0671}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Elasticity", "Elasticity", "{6972C933-84F9-4482-9302-3252DE771759}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "ThermoDynamic", "ThermoDynamic", "{8D8D91C8-7E44-4CDD-9649-B3E8B98DA60B}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -27,8 +35,21 @@ Global
 		{315A837F-7D7D-44CD-943E-1072E8BA8C04}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{315A837F-7D7D-44CD-943E-1072E8BA8C04}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{315A837F-7D7D-44CD-943E-1072E8BA8C04}.Release|Any CPU.Build.0 = Release|Any CPU
+		{1C7CCC53-EA25-4E1E-BC38-08274B8E55A7}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{1C7CCC53-EA25-4E1E-BC38-08274B8E55A7}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{1C7CCC53-EA25-4E1E-BC38-08274B8E55A7}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{1C7CCC53-EA25-4E1E-BC38-08274B8E55A7}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{D15A3E4D-F224-4683-A509-5A76A1033220} = {6972C933-84F9-4482-9302-3252DE771759}
+		{14F236E9-388F-4B71-A4C5-3C6F259786F7} = {DEA73BF5-74BC-4F53-8603-48F1D37E0671}
+		{315A837F-7D7D-44CD-943E-1072E8BA8C04} = {6972C933-84F9-4482-9302-3252DE771759}
+		{1C7CCC53-EA25-4E1E-BC38-08274B8E55A7} = {8D8D91C8-7E44-4CDD-9649-B3E8B98DA60B}
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {F47F76D5-58B4-4DB7-8A9D-70E7CDA26502}
 	EndGlobalSection
 EndGlobal

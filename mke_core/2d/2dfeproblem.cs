@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace mke_core
 {
-    public delegate List<FElement> Problem(List<Node> nodes, ref double E, ref double nu, ref double t);
+    public delegate List<EFElement> Problem(List<ElasticNode> nodes, ref double E, ref double nu, ref double t);
     /// <summary>
     /// Class for defining 2D Finite Element Problem
     /// </summary>
@@ -14,7 +14,7 @@ namespace mke_core
     {
         double E = 2.0e+11;
         double nu = 0.25;
-        double t = 1;//tickness 
+        double t = 1;//thickness 
         StreamWriter stream = null;
 
         public FeProblem2d(StreamWriter s = null)
@@ -22,7 +22,7 @@ namespace mke_core
             stream = s;
         }
         /// <summary>
-        /// Solve 2D stress/strain problem usin Finite element method
+        /// Solve 2D stress/strain problem using Finite element method
         /// </summary>
         /// <param name="init"></param>
         /// <param name="resultFilePAth"> file path for result output</param>
@@ -30,10 +30,10 @@ namespace mke_core
         public Matrix Solve(Problem init)
         {
             //call callback function to initialize the problem
-            var nodes = new List<Node>();
-            List<FElement> eColl = init(nodes, ref E, ref nu, ref t);
+            var nodes = new List<ElasticNode>();
+            List<EFElement> eColl = init(nodes, ref E, ref nu, ref t);
 
-            //Global stiffness m atrix
+            //Global stiffness m matrix
             Matrix gs = calculateGlobalStiffness(nodes, eColl, E, nu, t);
 
             //write global matrix
@@ -55,32 +55,32 @@ namespace mke_core
             if (stream != null)
             {
                 stream.WriteLine("******************START ** 2D SOLVER ** START******************");
-                stream.WriteLine("******* Global Stifness matrix***********");
+                stream.WriteLine("******* Global Stiffness matrix***********");
                 stream.WriteLine("{0}", gs.ToString());
                 stream.WriteLine(" ");
             }
         }
 
         /// <summary>
-        /// from the boundary condition and global stifness matrix calculate unknown displacements
+        /// from the boundary condition and global stiffness matrix calculate unknown displacements
         /// </summary>
         /// <param name="gs">global stiffness matrix</param>
         /// <param name="nodes">defined nodes</param>
         /// <returns></returns>
-        private Matrix solveMKE(Matrix gs, List<Node> nodes)
+        private Matrix solveMKE(Matrix gs, List<ElasticNode> nodes)
         {
             int count = getMatrixStiffOrder(nodes);
             Matrix f = new Matrix(count, 4);
             for (int i = 0; i < nodes.Count; i++)
             {
-                //set extenal loads vektor
+                //set external loads vector
                 int ind = i * nodes[i].GetDof();
                 //Index columns of the f matrix
-                //0 - nodeID, 1 - nodetype, 2 - loads, 3-displacements
+                //0 - nodeID, 1 - node type, 2 - loads, 3-displacements
                 setExternalLoads(f, nodes[i], ind);
             }
 
-            //caclulate number of unknowns of the system
+            //calculate number of unknowns of the system
             var sysCount = f.GetCol(2).mat.Where(x => !double.IsNaN(x)).Count();
             Matrix A = new Matrix(sysCount, sysCount);
             Matrix b = new Matrix(sysCount, 1);
@@ -133,20 +133,20 @@ namespace mke_core
         /// </summary>
         /// <param name="nodes">nodes</param>
         /// <returns></returns>
-        private int getMatrixStiffOrder(List<Node> nodes)
+        private int getMatrixStiffOrder(List<ElasticNode> nodes)
         {
             return nodes.Count() * nodes[0].GetDof();
         }
 
         /// <summary>
-        /// calculate global stifness matri
+        /// calculate global stiffness matrix
         /// </summary>
         /// <param name="nodes">defined nodes</param>
-        /// <param name="eColl">finite element coletions</param>
+        /// <param name="eColl">finite element collections</param>
         /// <param name="E">MOdul of Elasticity</param>
-        /// <param name="nu">Paisson coefficient</param>
+        /// <param name="nu">Poisson coefficient</param>
         /// <returns></returns>
-        private Matrix calculateGlobalStiffness(List<Node> nodes, List<FElement> eColl, double E, double nu, double t)
+        private Matrix calculateGlobalStiffness(List<ElasticNode> nodes, List<EFElement> eColl, double E, double nu, double t)
         {
             //Calculate stiffness matrices for each finite element
             foreach (var e in eColl)
@@ -158,19 +158,19 @@ namespace mke_core
             }
 
 
-            //calculate number of row/cols of the global strifness matrix
+            //calculate number of row/cols of the global strictness matrix
             int iOrder = nodes.Count() * nodes[0].GetDof();
             //
             Matrix gS = new Matrix(iOrder, iOrder);
 
             //global stiffness matrix calculation
-            //foreach node in row direction
+            //for each node in row direction
             for (int i = 0; i < nodes.Count; i++)
             {
                 //mark row node ID
                 var rowNodeId = nodes[i].id;
 
-                //foreach node in column direction
+                //for each node in column direction
                 for (int j = 0; j < nodes.Count; j++)
                 {
                     //mark column node Id
@@ -179,13 +179,13 @@ namespace mke_core
                     //for each finite element
                     foreach (var e in eColl)
                     {
-                        //for each node of curent finite element
+                        //for each node of current finite element
                         for (int k = 0; k < e.nodes.Count; k++)
                         {
                             //find node with specified row node Id
                             if (e.nodes[k].id == rowNodeId)
                             {
-                                //for each node of curent finite element
+                                //for each node of current finite element
                                 for (int l = 0; l < e.nodes.Count; l++)
                                 {
                                     //find node with specified column node Id
@@ -223,22 +223,22 @@ namespace mke_core
         }
 
         /// <summary>
-        /// analizes and prepare external loads for system of equations
+        /// analyzes and prepare external loads for system of equations
         /// </summary>
-        /// <param name="f"> matix of node loads</param>
+        /// <param name="f"> matrix of node loads</param>
         /// <param name="nodes">nodes</param>
         /// <param name="index">collection index</param>
-        private void setExternalLoads(Matrix f, Node nodes, int index)
+        private void setExternalLoads(Matrix f, ElasticNode nodes, int index)
         {
-            if (nodes.type == MKENodeType.uv)
+            if (nodes.Type == MKENodeType.uv)
             {
                 //node id
                 f[index, 0] = nodes.id;
                 f[index + 1, 0] = nodes.id;
 
                 //node type
-                f[index, 1] = (int)nodes.type;
-                f[index + 1, 1] = (int)nodes.type;
+                f[index, 1] = (int)nodes.Type;
+                f[index + 1, 1] = (int)nodes.Type;
 
                 //loads
                 f[index, 2] = nodes.fx;

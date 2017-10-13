@@ -10,7 +10,8 @@ namespace mke_core
         uv = 1,//u,v - displacement 
         uvuf,//u,v - displacement and rotation related to u
         uvvf,//u,v - displacement and rotation related to v
-        uvufvf//u,v - displacement and rotation related to u , v 
+        uvufvf,//u,v - displacement and rotation related to u , v 
+        t//heat transfer node type
     }
     public enum MKEElementType
     {
@@ -21,7 +22,8 @@ namespace mke_core
     }
     public enum MKEPlaneType
     {
-        stress = 1,//plane stress tyoe
+        stress = 1,//plane stress type
         strain,//plane strain type
+        heat,
     }
 }

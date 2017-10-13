@@ -13,7 +13,7 @@ namespace Space1DFiniteElements
              */
 
             //Podaci;
-            double A = 2;// popracni presjek stapa u cm
+            double A = 2;// poprecni presjek stapa u cm
             double E = 2;//modul elasticnosti u  Gpa
 
             //modul elasticnosti u paskalima

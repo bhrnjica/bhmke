@@ -11,7 +11,7 @@ namespace bhmke_console
     {
         public static void Main(string[] args)
         {
-            var fileName = @"c://users/bhrnjica.DAENET/Desktop/mke.txt";
+            var fileName = @"C:/Users/BahrudinHrnjica/Desktop/mke.txt";
 
             var logFile = System.IO.File.Create(fileName);
             var logWriter = new System.IO.StreamWriter(logFile);
@@ -48,49 +48,49 @@ namespace bhmke_console
             Console.WriteLine("----- END------");
         }
 
-        private static List<FElement> Problem1(List<Node> nodes, ref double E, ref double nu, ref double t)
+        private static List<EFElement> Problem1(List<ElasticNode> nodes, ref double E, ref double nu, ref double t)
         {
             //material property
             E = 2.0e+11;
             nu = 0.3;
             t = 0.01;
 
-            var e = new List<FElement>();
-            var e1 = new FElement(1, MKEElementType.triangle, MKEPlaneType.stress);
-            var e2 = new FElement(2, MKEElementType.triangle, MKEPlaneType.stress);
+            var e = new List<EFElement>();
+            var e1 = new EFElement(1, MKEElementType.triangle, MKEPlaneType.stress);
+            var e2 = new EFElement(2, MKEElementType.triangle, MKEPlaneType.stress);
 
 
-            var n1 = new Node();
+            var n1 = new ElasticNode();
             n1.id = 1;
-            n1.x = 0;
-            n1.y = 0;
+            n1.x1 = 0;
+            n1.x2 = 0;
             //BC
             n1.u = 0;
             n1.v = 0;
             nodes.Add(n1);
 
-            var n2 = new Node();
+            var n2 = new ElasticNode();
             n2.id = 2;
-            n2.x = 0;
-            n2.y = 0.10;
+            n2.x1 = 0;
+            n2.x2 = 0.10;
             //BC
             n2.u = 0;
             n2.v = 0;
             nodes.Add(n2);
 
-            var n3 = new Node();
+            var n3 = new ElasticNode();
             n3.id = 3;
-            n3.x = 0.20;
-            n3.y = 0.10;
+            n3.x1 = 0.20;
+            n3.x2 = 0.10;
             //BC
             n3.fx = 5000;//BC
             n3.fy = 0;//BC
             nodes.Add(n3);
 
-            var n4 = new Node();
+            var n4 = new ElasticNode();
             n4.id = 4;
-            n4.x = 0.20;
-            n4.y = 0;
+            n4.x1 = 0.20;
+            n4.x2 = 0;
             //BC
             n4.fx = 5000;//BC
             n4.fy = 0;//BC
@@ -105,20 +105,20 @@ namespace bhmke_console
         }
 
 
-        private static List<FElement> Problem2(List<Node> nodes, ref double E, ref double nu, ref double t)
+        private static List<EFElement> Problem2(List<ElasticNode> nodes, ref double E, ref double nu, ref double t)
         {
             //material property
             E = 3.0e+7;
             nu = 0.25;
             t = 0.036;
-            var e = new List<FElement>();
-            var e1 = new FElement(1, MKEElementType.triangle, MKEPlaneType.stress);
-            var e2 = new FElement(2, MKEElementType.triangle, MKEPlaneType.stress);
+            var e = new List<EFElement>();
+            var e1 = new EFElement(1, MKEElementType.triangle, MKEPlaneType.stress);
+            var e2 = new EFElement(2, MKEElementType.triangle, MKEPlaneType.stress);
 
-            var n1 = new Node();
+            var n1 = new ElasticNode();
             n1.id = 1;
-            n1.x = 0;
-            n1.y = 0;
+            n1.x1 = 0;
+            n1.x2 = 0;
 
             //BC
             n1.u = 0;
@@ -127,10 +127,10 @@ namespace bhmke_console
 
             nodes.Add(n1);
 
-            var n2 = new Node();
+            var n2 = new ElasticNode();
             n2.id = 2;
-            n2.x = 0;
-            n2.y = 160;
+            n2.x1 = 0;
+            n2.x2 = 160;
 
 
             // BC
@@ -138,20 +138,20 @@ namespace bhmke_console
             n2.u = 0;
             nodes.Add(n2);
 
-            var n3 = new Node();
+            var n3 = new ElasticNode();
             n3.id = 3;
-            n3.x = 120;
-            n3.y = 160;
+            n3.x1 = 120;
+            n3.x2 = 160;
 
             //BC
             n3.fx = 800;
             n3.fy = 0;
             nodes.Add(n3);
 
-            var n4 = new Node();
+            var n4 = new ElasticNode();
             n4.id = 4;
-            n4.x = 120;
-            n4.y = 0;
+            n4.x1 = 120;
+            n4.x2 = 0;
             //BC
             n4.fx = 800;
             n4.fy = 0;
@@ -170,7 +170,7 @@ namespace bhmke_console
         //
         //https://onedrive.live.com/edit.aspx?cid=8b11bbbf3f0ed903&id=documents&resid=8B11BBBF3F0ED903!69817&app=OneNote&&wd=target%28%2F%2FSedmica%209.one%7C4eb47f0f-9cd2-4ee9-a70c-c3b5942f23d4%2FReddy%20Zadatak%7C074e3a36-a77d-4191-a1f9-1ceef1ccc8e9%2F%29
         //
-        private static List<FElement> Problem3(List<Node> nodes, ref double E, ref double nu, ref double t)
+        private static List<EFElement> Problem3(List<ElasticNode> nodes, ref double E, ref double nu, ref double t)
         {
             //material property
             E = 30.0e+6;//psi
@@ -181,34 +181,34 @@ namespace bhmke_console
             double p0 = 10;//lb/in
 
             //
-            var e = new List<FElement>();
-            var e1 = new FElement(1, MKEElementType.triangle, MKEPlaneType.stress);
-            var e2 = new FElement(2, MKEElementType.triangle, MKEPlaneType.stress);
+            var e = new List<EFElement>();
+            var e1 = new EFElement(1, MKEElementType.triangle, MKEPlaneType.stress);
+            var e2 = new EFElement(2, MKEElementType.triangle, MKEPlaneType.stress);
 
 
-            var n1 = new Node();
+            var n1 = new ElasticNode();
             n1.id = 1;
-            n1.x = 0;
-            n1.y = 0;
+            n1.x1 = 0;
+            n1.x2 = 0;
             //BC
             n1.u = 0;
             n1.v = 0;
             nodes.Add(n1);
 
-            var n2 = new Node();
+            var n2 = new ElasticNode();
             n2.id = 2;
-            n2.x = a;
-            n2.y = 0;
+            n2.x1 = a;
+            n2.x2 = 0;
 
             //Boundary condition
             n2.fx = p0 * b / 2.0;//BC
             n2.fy = 0;//BC
             nodes.Add(n2);
 
-            var n3 = new Node();
+            var n3 = new ElasticNode();
             n3.id = 3;
-            n3.x = 0;
-            n3.y = b;
+            n3.x1 = 0;
+            n3.x2 = b;
 
             //Boundary condition
 
@@ -216,10 +216,10 @@ namespace bhmke_console
             n3.v = 0;//BC
             nodes.Add(n3);
 
-            var n4 = new Node();
+            var n4 = new ElasticNode();
             n4.id = 4;
-            n4.x = a;
-            n4.y = b;
+            n4.x1 = a;
+            n4.x2 = b;
             //BC
             n4.fx = p0 * b / 2.0;//BC
             n4.fy = 0;//BC
@@ -233,7 +233,7 @@ namespace bhmke_console
             return e;
         }
 
-        private static List<FElement> Problem4(List<Node> nodes, ref double E, ref double nu, ref double t)
+        private static List<EFElement> Problem4(List<ElasticNode> nodes, ref double E, ref double nu, ref double t)
         {
             //material property
             E = 2.0e+11;//
@@ -242,17 +242,17 @@ namespace bhmke_console
 
 
             //
-            var e = new List<FElement>();
-            var e1 = new FElement(1, MKEElementType.triangle, MKEPlaneType.stress);
-            var e2 = new FElement(2, MKEElementType.triangle, MKEPlaneType.stress);
-            var e3 = new FElement(3, MKEElementType.triangle, MKEPlaneType.stress);
-            var e4 = new FElement(4, MKEElementType.triangle, MKEPlaneType.stress);
+            var e = new List<EFElement>();
+            var e1 = new EFElement(1, MKEElementType.triangle, MKEPlaneType.stress);
+            var e2 = new EFElement(2, MKEElementType.triangle, MKEPlaneType.stress);
+            var e3 = new EFElement(3, MKEElementType.triangle, MKEPlaneType.stress);
+            var e4 = new EFElement(4, MKEElementType.triangle, MKEPlaneType.stress);
 
 
-            var n1 = new Node();
+            var n1 = new ElasticNode();
             n1.id = 1;
-            n1.x = 0;
-            n1.y = 0;
+            n1.x1 = 0;
+            n1.x2 = 0;
 
             //Boundary condition
             n1.u = 0;//BC
@@ -260,48 +260,48 @@ namespace bhmke_console
 
             nodes.Add(n1);
 
-            var n2 = new Node();
+            var n2 = new ElasticNode();
             n2.id = 2;
-            n2.x = 0.1;
-            n2.y = 0;
+            n2.x1 = 0.1;
+            n2.x2 = 0;
 
             //Boundary condition
             n2.fx = 0;//BC
             n2.fy = 0;//BC
             nodes.Add(n2);
 
-            var n3 = new Node();
+            var n3 = new ElasticNode();
             n3.id = 3;
-            n3.x = 0.2;
-            n3.y = 0;
+            n3.x1 = 0.2;
+            n3.x2 = 0;
 
             //Boundary condition
             n3.fx = 5000;//BC
             n3.fy = 0;//BC
             nodes.Add(n3);
 
-            var n4 = new Node();
+            var n4 = new ElasticNode();
             n4.id = 4;
-            n4.x = 0.2;
-            n4.y = 0.1;
+            n4.x1 = 0.2;
+            n4.x2 = 0.1;
             //BC
             n4.fx = 5000;//BC
             n4.fy = 0;//BC
             nodes.Add(n4);
 
-            var n5 = new Node();
+            var n5 = new ElasticNode();
             n5.id = 5;
-            n5.x = 0.1;
-            n5.y = 0.1;
+            n5.x1 = 0.1;
+            n5.x2 = 0.1;
             //BC
             n5.fx = 0;//BC
             n5.fy = 0;//BC
             nodes.Add(n5);
 
-            var n6 = new Node();
+            var n6 = new ElasticNode();
             n6.id = 6;
-            n6.x = 0;
-            n6.y = 0.1;
+            n6.x1 = 0;
+            n6.x2 = 0.1;
             //BC
             n6.u = 0;//BC
             n6.v = 0;//BC

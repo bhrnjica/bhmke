@@ -6,9 +6,12 @@ using System.Threading.Tasks;
 
 namespace mke_core
 {
-    public class FElement
+    /// <summary>
+    /// class implements elastic finite element
+    /// </summary>
+    public class EFElement
     {
-        public List<Node> nodes;
+        public List<ElasticNode> nodes;
         public int id;
         public MKEElementType type;
         public MKEPlaneType pType;
@@ -23,18 +26,18 @@ namespace mke_core
         /// </summary>
         /// <param name="elemId"></param>
         /// <param name="plane"></param>
-        public FElement(int elemId = 0, MKEElementType t = MKEElementType.triangle, MKEPlaneType plane = MKEPlaneType.stress)
+        public EFElement(int elemId = 0, MKEElementType t = MKEElementType.triangle, MKEPlaneType plane = MKEPlaneType.stress)
         {
             id = elemId;
             pType = plane;
             type = t;
-            nodes = new List<Node>();
+            nodes = new List<ElasticNode>();
         }
         /// <summary>
-        /// Calculate stifness matrix from  b and e matix
+        /// Calculate stiffness matrix from  b and e matrix
         /// </summary>
-        /// <param name="E">Elasticity modul</param>
-        /// <param name="nu">Poisson coeff</param>
+        /// <param name="E">Elasticity module</param>
+        /// <param name="nu">Poisson coefficient</param>
         public void calcStiffness(double E, double nu, double t)
         {
             calBMatrix();
@@ -54,16 +57,16 @@ namespace mke_core
             if (type == MKEElementType.triangle)
             {
                 bMatrix = new Matrix(3, 6);
-                double a1 = nodes[1].x * nodes[2].y - nodes[2].x * nodes[1].y;
-                double a2 = nodes[2].x * nodes[0].y - nodes[0].x * nodes[2].y;
-                double a3 = nodes[0].x * nodes[1].y - nodes[1].x * nodes[0].y;
-                double b1 = nodes[1].y - nodes[2].y;
-                double b2 = nodes[2].y - nodes[0].y;
-                double b3 = nodes[0].y - nodes[1].y;
-                double g1 = nodes[2].x - nodes[1].x;
-                double g2 = nodes[0].x - nodes[2].x;
-                double g3 = nodes[1].x - nodes[0].x;
-                bValue = nodes[0].x * (nodes[1].y - nodes[2].y) + nodes[1].x * (nodes[2].y - nodes[0].y) + nodes[2].x * (nodes[0].y - nodes[1].y);
+                double a1 = nodes[1].x1 * nodes[2].x2 - nodes[2].x1 * nodes[1].x2;
+                double a2 = nodes[2].x1 * nodes[0].x2 - nodes[0].x1 * nodes[2].x2;
+                double a3 = nodes[0].x1 * nodes[1].x2 - nodes[1].x1 * nodes[0].x2;
+                double b1 = nodes[1].x2 - nodes[2].x2;
+                double b2 = nodes[2].x2 - nodes[0].x2;
+                double b3 = nodes[0].x2 - nodes[1].x2;
+                double g1 = nodes[2].x1 - nodes[1].x1;
+                double g2 = nodes[0].x1 - nodes[2].x1;
+                double g3 = nodes[1].x1 - nodes[0].x1;
+                bValue = nodes[0].x1 * (nodes[1].x2 - nodes[2].x2) + nodes[1].x1 * (nodes[2].x2 - nodes[0].x2) + nodes[2].x1 * (nodes[0].x2 - nodes[1].x2);
                 tArea = 0.5 * bValue;
                 bMatrix[0, 0] = b1; bMatrix[0, 1] = 0; bMatrix[0, 2] = b2; bMatrix[0, 3] = 0; bMatrix[0, 4] = b3; bMatrix[0, 5] = 0;
                 bMatrix[1, 0] = 0; bMatrix[1, 1] = g1; bMatrix[1, 2] = 0; bMatrix[1, 3] = g2; bMatrix[1, 4] = 0; bMatrix[1, 5] = g3;
@@ -75,8 +78,8 @@ namespace mke_core
         /// <summary>
         /// Calculation of E matrix
         /// </summary>
-        /// <param name="E"> Modul Elasticity</param>
-        /// <param name="nu"> Poisson coeff</param>
+        /// <param name="E"> Modulo Elasticity</param>
+        /// <param name="nu"> Poisson coefficient</param>
         private void calEMatrix(double E, double nu)
         {
             if (type == MKEElementType.triangle)
@@ -114,7 +117,7 @@ namespace mke_core
                 tw.Write("Nodes:(ID; X; Y)={");
                 foreach (var n in nodes)
                 {
-                    tw.Write("({0}; {1}; {2})", n.id, n.x, n.y);
+                    tw.Write("({0}; {1}; {2})", n.id, n.x1, n.x2);
                 }
                 tw.Write("}");
 
@@ -134,7 +137,7 @@ namespace mke_core
                 tw.WriteLine("]");
 
                 //Stiffness matrix
-                tw.WriteLine("*******Stifness Matrix*****");
+                tw.WriteLine("*******Stiffness Matrix*****");
                 tw.WriteLine("");
                 tw.WriteLine("{0}", kStiffness.ToString());
                 //End of write
