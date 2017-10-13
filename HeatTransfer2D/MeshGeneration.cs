@@ -1,5 +1,7 @@
-﻿using System;
+﻿using mke_core;
+using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Text;
 
 namespace HeatTransfer2D
@@ -35,6 +37,60 @@ namespace HeatTransfer2D
             }
 
             return a_parts.ToArray();
+        }
+
+        /// <summary>
+        /// Generate Thermo Nodes based on parts of horizontal a and vertical b length
+        /// </summary>
+        /// <param name="a_parts">parts length of horizontal length</param>
+        /// <param name="b_parts">parts length of vertical length</param>
+        /// <returns></returns>
+        internal static ThermoNode[][] GenerateNodes(float[] a_parts, float[] b_parts)
+        {
+            var nh = a_parts.Length;
+            var nv = b_parts.Length;
+            //
+            var nodes = new ThermoNode[nh + 1][];
+            int nIndex = 1;
+            float r = 0;
+            for (int i = 0; i <= nh; i++)
+            {
+                float z = 0;
+                nodes[i] = new ThermoNode[nv + 1];
+
+                for (int j = 0; j <= nv; j++)
+                {
+                    var n = new ThermoNode(MKENodeType.t);
+                    n.x1 = r;
+                    n.x2 = z;
+                    n.id = nIndex;
+                    nodes[i][j] = n;
+                    nIndex++;
+                    if (j < nv)
+                        z += b_parts[j];
+                }
+
+                if (i < nh)
+                    r += a_parts[i];
+            }
+
+            return nodes;
+        }
+
+        /// <summary>
+        /// Prints node as three ordered number (Id,X1,x2)
+        /// </summary>
+        /// <param name="nodes"></param>
+        /// <param name="tw"> File stream to export node coordinates</param>
+        public static void printNodes(ThermoNode[][] nodes, StreamWriter tw)
+        {
+            for (int i = 0; i < nodes.Length; i++)
+            {
+                for (int j = 0; j < nodes[0].Length; j++)
+                {
+                    tw.WriteLine($"{nodes[i][j].id},{nodes[i][j].x1},{nodes[i][j].x2}");
+                }
+            }
         }
     }
 }

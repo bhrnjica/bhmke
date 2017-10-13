@@ -26,7 +26,7 @@ namespace mke_core
             x1 = x2 = t = double.NaN;
         }
 
-        public int GetDof()
+        public override int GetDof()
         {
             return 4;
         }

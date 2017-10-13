@@ -32,7 +32,7 @@ namespace mke_core
             x1 = x2 = u = v = fiu = fiv = fx = fy = mxz = myz = double.NaN;
         }
 
-        public int GetDof()
+        public override int GetDof()
         {
             if (Type == MKENodeType.uv)
                 return 2;

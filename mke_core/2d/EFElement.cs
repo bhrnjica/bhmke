@@ -9,11 +9,9 @@ namespace mke_core
     /// <summary>
     /// class implements elastic finite element
     /// </summary>
-    public class EFElement
+    public class EFElement : FElementBase
     {
-        public List<ElasticNode> nodes;
-        public int id;
-        public MKEElementType type;
+
         public MKEPlaneType pType;
         public double bValue;
         public Matrix bMatrix;
@@ -31,7 +29,7 @@ namespace mke_core
             id = elemId;
             pType = plane;
             type = t;
-            nodes = new List<ElasticNode>();
+            nodes = new List<NodeBase>();
         }
         /// <summary>
         /// Calculate stiffness matrix from  b and e matrix
