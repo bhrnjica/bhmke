@@ -11,12 +11,12 @@ namespace HeatTransfer2D
 
         static void Main(string[] args)
         {
+            //prepare file for logging
             var fileName = @"C:/Users/BahrudinHrnjica/Desktop/thermo.txt";
-
             var logFile = System.IO.File.Create(fileName);
             var logWriter = new System.IO.StreamWriter(logFile);
 
-
+            ///****************INPUT******************///
             //dimension of rectangle (domain) 
             float a, b;         //, c, d;
             a = 12; b = 120;    //c = 15; d = 100;
@@ -43,15 +43,14 @@ namespace HeatTransfer2D
             {
                 MeshGeneration.printNodes(nodes, tw);
             }
-             
+
             //finite element generation
-          //  List<FE>
+            List<HeatFElement> els = MeshGeneration.GenerateElements(nodes);
 
-
-           // Console.Read();
+            // Console.Read();
 
         }
 
-        
+       
     }
 }

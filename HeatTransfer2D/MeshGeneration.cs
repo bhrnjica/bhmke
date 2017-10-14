@@ -77,6 +77,28 @@ namespace HeatTransfer2D
             return nodes;
         }
 
+        internal static List<HeatFElement> GenerateElements(ThermoNode[][] nodes)
+        {
+            var els = new List<HeatFElement>();
+            int id = 1;
+            for (int i = 0; i < nodes.Length - 1; i++)
+            {
+                for (int j = 0; j < nodes[0].Length - 1; j++)
+                {
+                    var el = new HeatFElement(id);
+                    el.nodes.Add(nodes[i][j]);
+                    el.nodes.Add(nodes[i + 1][j]);
+                    el.nodes.Add(nodes[i + 1][j + 1]);
+                    el.nodes.Add(nodes[i][j + 1]);
+                    //
+                    els.Add(el);
+                    id++;
+                }
+            }
+
+            return els;
+        }
+
         /// <summary>
         /// Prints node as three ordered number (Id,X1,x2)
         /// </summary>
