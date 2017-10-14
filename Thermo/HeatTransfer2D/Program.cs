@@ -25,9 +25,9 @@ namespace HeatTransfer2D
             k = 0.8f;
 
             //number of horizontal nodes
-            int nh = 5;
+            int nh = 50;
             //number of vertical nodes
-            int nv = 6;
+            int nv = 60;
 
 
             var a_parts = MeshGeneration.divideLength(a, nh, k);
@@ -46,6 +46,8 @@ namespace HeatTransfer2D
 
             //finite element generation
             List<HeatFElement> els = MeshGeneration.GenerateElements(nodes);
+
+            //
 
             // Console.Read();
 

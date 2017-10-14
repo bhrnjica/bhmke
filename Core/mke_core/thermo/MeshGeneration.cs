@@ -45,7 +45,7 @@ namespace HeatTransfer2D
         /// <param name="a_parts">parts length of horizontal length</param>
         /// <param name="b_parts">parts length of vertical length</param>
         /// <returns></returns>
-        internal static ThermoNode[][] GenerateNodes(float[] a_parts, float[] b_parts)
+        public static ThermoNode[][] GenerateNodes(float[] a_parts, float[] b_parts)
         {
             var nh = a_parts.Length;
             var nv = b_parts.Length;
@@ -77,7 +77,7 @@ namespace HeatTransfer2D
             return nodes;
         }
 
-        internal static List<HeatFElement> GenerateElements(ThermoNode[][] nodes)
+        public static List<HeatFElement> GenerateElements(ThermoNode[][] nodes)
         {
             var els = new List<HeatFElement>();
             int id = 1;

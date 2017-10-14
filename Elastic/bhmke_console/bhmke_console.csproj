@@ -13,7 +13,7 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\mke_core\mke_core.csproj" />
+    <ProjectReference Include="..\..\Core\mke_core\mke_core.csproj" />
   </ItemGroup>
 
 </Project>

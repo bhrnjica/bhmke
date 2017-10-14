@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 namespace mke_core
 {
     /// <summary>
-    /// class implements elastic finite element
+    /// class implements finite element for heat transfer
     /// </summary>
     public class HeatFElement : FElementBase
     {
