@@ -19,15 +19,15 @@ namespace HeatTransfer2D
             ///****************INPUT******************///
             //dimension of rectangle (domain) 
             float a, b;         //, c, d;
-            a = 12; b = 120;    //c = 15; d = 100;
+            a = 20; b = 120;    //c = 15; d = 100;
             //nonlinear factor for meshing from y axis to the end of rectangle in horizontal dimension
             float k;
             k = 0.8f;
 
             //number of horizontal nodes
-            int nh = 50;
+            int nh = 40;
             //number of vertical nodes
-            int nv = 60;
+            int nv = 70;
 
 
             var a_parts = MeshGeneration.divideLength(a, nh, k);

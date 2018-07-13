@@ -28,7 +28,7 @@ namespace mke_core
 
         public override int GetDof()
         {
-            return 4;
+            return 1;
         }
     }
 }

@@ -36,7 +36,7 @@ namespace HeatTransferWnd
             ///node generation
             ThermoNode[][] nodes = MeshGeneration.GenerateNodes(a_parts, b_parts);
             //finite element generation
-            List<HeatFElement> els = MeshGeneration.GenerateElements(nodes);
+            List<HeatFElement> els = MeshGeneration.GenerateTElements(nodes);
             drawMesh(a,b, els);
 
         }
@@ -62,11 +62,13 @@ namespace HeatTransferWnd
                 var pen = new Pen(Color.Black, 1f);
                 g.DrawLine(Pens.Black, (float)el.nodes[0].x1, (float)el.nodes[0].x2, (float)el.nodes[1].x1, (float)el.nodes[1].x2);
                 g.DrawLine(Pens.Black, (float)el.nodes[1].x1, (float)el.nodes[1].x2, (float)el.nodes[2].x1, (float)el.nodes[2].x2);
-                g.DrawLine(Pens.Black, (float)el.nodes[2].x1, (float)el.nodes[2].x2, (float)el.nodes[3].x1, (float)el.nodes[3].x2);
-                g.DrawLine(Pens.Black, (float)el.nodes[3].x1, (float)el.nodes[3].x2, (float)el.nodes[0].x1, (float)el.nodes[0].x2);
+                g.DrawLine(Pens.Black, (float)el.nodes[2].x1, (float)el.nodes[2].x2, (float)el.nodes[00].x1, (float)el.nodes[0].x2);
+               // g.DrawLine(Pens.Black, (float)el.nodes[3].x1, (float)el.nodes[3].x2, (float)el.nodes[0].x1, (float)el.nodes[0].x2);
                 g.DrawString(el.id.ToString(), SystemFonts.DefaultFont, Brushes.Blue, (float)el.nodes[0].x1, (float)el.nodes[0].x2);
             }
-                
+
+           
+
         }
     }
 }
